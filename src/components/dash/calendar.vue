@@ -5,7 +5,7 @@
     </v-toolbar> -->
     <v-container fluid class="pt-0 skej-grey-background">
       <v-row>
-        <v-col cols="12" md="7" class="section-1 scroll-section pa-0">
+        <v-col class="section-1 scroll-section pa-0">
           <v-sheet class="month pb-1 skej-grey-background">
             <v-row>
               <v-col cols="12" sm="1">
@@ -71,6 +71,12 @@
                         @click="toggleEventTypeActive('type4')"
                       ></div>
                     </div>
+
+                    <v-btn text @click.stop="drawer_right = !drawer_right" color="rgba(0, 0, 0, 0.54)" class="ml-5">
+                      List
+                      <v-icon right style="vertical-align: middle">mdi-menu</v-icon>
+                    </v-btn>
+
                   </v-toolbar>
                   <month-year-picker
                     :showMonthPicker="showMonthPicker"
@@ -147,7 +153,7 @@
             </div>
           </div>
         </v-col>
-        <v-col cols="12" md="5" class="selected-day-section scroll-section">
+        <v-col v-show="drawer_right" cols="12" md="4" class="selected-day-section scroll-section">
           <h3 class="text-center font-weight-medium">{{focusDateLong}}</h3>
           <day-schedule
             :date="this.focus"
@@ -190,7 +196,7 @@
 
   .day #day-controls {
     width: 38.2% !important;
-    border-right: 1px solid #e0e0e0;
+    border-right: 1px solid #EEeEeE;
   }
 
   .v-toolbar .v-btn--fab:focus::before {
@@ -268,9 +274,9 @@
   .upcoming-section * {
     background-color: #f3f3ff;
   }
-  .v-sheet.month {
-    // height: calc(100vh - 300px);
-  }
+  // .v-sheet.month {
+  //   // height: calc(100vh - 300px);
+  // }
   @media(min-width: 960px) {
     .selected-day-section, .section-1 {
       height: calc(100vh - 60px);
@@ -349,13 +355,14 @@
     // width: 5vw;
   }
 
-  .v-sheet.month .v-calendar-weekly__day, {
+  .v-sheet.month .v-calendar-weekly__day {
     // width: 2vw;
     height: 4vw;
-    border-left: 1px solid #E0E0E0;
-    border-right: 1px solid #E0E0E0;
+    border-left: 1px solid #EEEEEE;
+    border-right: 1px solid #EEEEEE;
     font-size: 12px;
   }
+
   @media(max-width: 959px) {
     .v-sheet.month .v-calendar-weekly__day, .week-button{
       height: 8vw;
@@ -368,8 +375,8 @@
     }
   // }
   .theme--light.v-calendar-weekly .v-calendar-weekly__head-weekday {
-    border-left: 1px solid #E0E0E0;
-    border-right: 1px solid #E0E0E0;
+    border-left: 1px solid #EEEEEE;
+    border-right: 1px solid #EEEEEE;
   }
 
   .v-calendar-monthly {
@@ -389,13 +396,13 @@
   //Fixing bugs in the calendar when in RTL mode
   .v-application.rtl {
     .v-calendar-weekly {
-      border-left: #e0e0e0 1px solid !important;
+      border-left: #EEeEeE 1px solid !important;
     }
 
     #day-controls {
       float: right;
       border-right: none;
-      border-left: 1px solid #e0e0e0;
+      border-left: 1px solid #EEeEeE;
     }
 
     .day .v-calendar-daily__intervals-body {
@@ -407,7 +414,7 @@
       margin-left: 17px !important;
 
       .v-calendar-daily__intervals-head::after {
-        background: linear-gradient(-90deg, transparent, #e0e0e0);
+        background: linear-gradient(-90deg, transparent, #EEeEeE);
       }
     }
 
@@ -497,7 +504,8 @@ export default {
     showMonthPicker: false,
     showYearPicker: false,
     day_start: 7,
-    polling: null
+    polling: null,
+    drawer_right: true
   }),
 
   computed: {

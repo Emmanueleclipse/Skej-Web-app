@@ -45,7 +45,7 @@
                   <v-slide-item
                     v-for="(button, key) in eventEditFieldButtons"
                     :key="`event-edit-button-${key}`"
-                    v-slot:default="{ active, toggle }"
+                    v-slot:default="{}"
                   >
                     <v-slide-y-transition>
                       <button v-show="!button.showInput"
@@ -70,12 +70,14 @@
             <v-toolbar flat dense height="72" color="skej-grey-background">
               <v-btn text default :to="{ name: 'calendar' }"><v-icon>mdi-arrow-left</v-icon></v-btn>
               <v-spacer/>
-              <v-btn fab text small color="grey darken-2" @click="prev">
-                <v-icon small>mdi-chevron-left</v-icon>
+              <v-btn text small color="grey" @click="prev">
+                <v-icon large>mdi-menu-left</v-icon>
+                <!-- <v-icon small>mdi-chevron-left</v-icon> -->
               </v-btn>
               <v-toolbar-title><h3 class="font-weight-medium">{{ title }}</h3></v-toolbar-title>
-              <v-btn fab text small color="grey darken-2" @click="next">
-                <v-icon small>mdi-chevron-right</v-icon>
+              <v-btn text small color="grey" @click="next">
+                <v-icon large>mdi-menu-right</v-icon>
+                <!-- <v-icon small>mdi-chevron-right</v-icon> -->
               </v-btn>
               <v-spacer/>
               <div id="color-bar">
@@ -112,13 +114,13 @@
             <v-divider></v-divider>
             <v-row no-gutters>
               <v-col cols="1">
-                <v-list class="mt-12 pt-8"
+                <v-list class="mt-12 pt-5"
                   flat
                   disabled
                   single-line
                   >
-                  <div  v-for="hour in hours" :key="`hour-${hour.hr}`">
-                    <v-list-item v-if="hour.hr >= day_start" class="px-0">
+                  <div v-for="hour in hours" :key="`hour-${hour.hr}`">
+                    <v-list-item v-if="hour.hr >= day_start" class="pt-0 px-0">
                       <v-card flat tile>
                         <v-card-text
                           class="font-weight-bold py-0 pr-0">
@@ -147,10 +149,16 @@
                   v-model="focus"
                   :locale="$i18n.locale + '-' + localStorage.country"
                   :event-more="false"
-                  :interval-height="64"
-                  :first-interval="day_start"
+                  :first-interval="28"
+                  :interval-count="68"
+                  :interval-minutes="15"
+                  interval-height="20px"
+                  :interval-format="hourFormat"
                   @change="updateRange"
                 >
+                <template v-slot:day-label-header="{day}">
+                  <div class="text-left my-2 caption">{{day}}</div>
+                </template>
                 <template v-slot:interval="{ date, hour }">
                   <div v-if="(hour <= 24) && (hour >= day_start)" class="hour-interval">
                     <div
@@ -163,24 +171,24 @@
                         <div :class="['vertical-dash', (interval.quarters.includes('start')? event_colors[`type${interval.event.type}`] : '')]"></div>
                         <span class="pl-1" v-if="active_types.includes(`type${interval.type}`)">{{interval.event.eventName}}</span>
                       </div>
-                      <div :class="getQuarterClasses(interval, hour, 'quarter')"
+                      <!-- <div :class="getQuarterClasses(interval, hour, 'quarter')"
                           @click="interval.event?setSelectedEvent(interval.event.id):{}"
                         >
                         <div :class="['vertical-dash', (interval.quarters.includes('quarter')? event_colors[`type${interval.event.type}`] : '')]"></div>
                         <span class="pl-1" v-if="active_types.includes(`type${interval.type}`)">{{interval.event.eventName}}</span>
-                      </div>
-                      <div :class="getQuarterClasses(interval, hour, 'half')"
+                      </div> -->
+                      <!-- <div :class="getQuarterClasses(interval, hour, 'half')"
                           @click="interval.event?setSelectedEvent(interval.event.id):{}"
                         >
                         <div :class="['vertical-dash', (interval.quarters.includes('half')? event_colors[`type${interval.event.type}`] : '')]"></div>
                         <span class="pl-1" v-if="active_types.includes(`type${interval.type}`)">{{interval.event.eventName}}</span>
-                      </div>
-                      <div :class="getQuarterClasses(interval, hour, 'quarter_til')"
+                      </div> -->
+                      <!-- <div :class="getQuarterClasses(interval, hour, 'quarter_til')"
                           @click="interval.event?setSelectedEvent(interval.event.id):{}"
                         >
                         <div :class="['vertical-dash', (interval.quarters.includes('quarter_til')? event_colors[`type${interval.event.type}`] : '')]"></div>
                         <span class="pl-1" v-if="active_types.includes(`type${interval.type}`)">{{interval.event.eventName}}</span>
-                      </div>
+                      </div> -->
                     </div>
                   </div>
                 </template>
@@ -220,7 +228,7 @@
                   </v-card>
                   <v-spacer></v-spacer>
                   <v-card flat tile class="d-inline skej-grey-background my-2">
-                    <v-card-text class="px-1 py-2 text--disabled">{{event.eventStart}} | {{event.end}}</v-card-text>
+                    <v-card-text class="px-1 py-2 text--disabled">{{event.eventStart.substr(11,5)}} - {{event.eventEnd.substr(11,5)}}</v-card-text>
                   </v-card>
                 </div>
               </div>
@@ -245,11 +253,11 @@
       background-color: $skej-background;
     }
 
-  .v-toolbar {
-    // border-bottom: 2px solid #EBEBF1;
-    // border-top: 2px solid #EBEBF1;
-    // margin-bottom: 10px;
-  }
+  // .v-toolbar {
+  //   // border-bottom: 2px solid #EBEBF1;
+  //   // border-top: 2px solid #EBEBF1;
+  //   // margin-bottom: 10px;
+  // }
   @media(min-width: 959px) {
     .section-1 {
       border-right: 2px solid #EBEBF1;
@@ -266,6 +274,9 @@
     height: 100%;
     width: 4px;
     display: inline-block;
+  }
+  .v-calendar .vertical-dash {
+    height: 20px;
   }
   #color-bar {
     height: 15px;
@@ -297,7 +308,7 @@
   }
   .v-calendar-daily__intervals-body,
   .v-calendar-daily__intervals-head {
-    display: none;
+    display: block;
   }
   .hr15, .hr30, .hr45, .event-name {
     line-height: 0.9rem
@@ -310,6 +321,13 @@
   .theme--light.v-calendar-daily .v-calendar-daily__day,
   .theme--light.v-calendar-daily .v-calendar-daily_head-day {
     border: none;
+  }
+  .v-calendar-daily_head-weekday {
+    text-align: left;
+    color: rgba(0,0,0,.54);
+    margin-top: 1vh;
+    font-weight: bold;
+    font-size: .8em;
   }
   .v-calendar-daily__scroll-area {
     overflow-y: inherit;
@@ -684,6 +702,9 @@ export default {
     setEventEditTypeInput (index) {
       this.eventEditForm.type = index + 1
       // this.showColorSelection = false
+    },
+    hourFormat (t) {
+      return t.minute !== 0 ? t.minute : t.hour + ':00'
     }
     // pollApi () {
     //   this.getEvents()

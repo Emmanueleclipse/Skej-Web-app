@@ -66,12 +66,13 @@
             </v-toolbar-title>
           </v-toolbar>
           <div class="todolist scroll-section" style="padding-bottom: 150px">
-            <draggable :list="tasks" group="todolist" @change="reorderTodoItem" ghost-class="drag-ghost">
+            <draggable v-bind="dragOptions" :list="tasks" group="todolist" @change="reorderTodoItem" ghost-class="drag-ghost">
               <div
                 v-for="task in tasks"
                 :key="`task-${task.priority}-${task.name}-${task.is_temp}`"
                 class="pa-0 pt-1 grey-divider"
                 :ref="`task-${task.pk}-text`"
+                @click="setSelectedTask(task)"
                 @mouseover="showTaskEditButtons = true; hoveredTask = task"
                 @mouseleave="showTaskEditButtons = false; hoveredTask = null"
               >
@@ -224,6 +225,10 @@
   }
   .drag-ghost {
     opacity: 1 !important;
+    border: 1px #BDF solid;
+  }
+  .grabbing {
+    display: none;
   }
 </style>
 
@@ -266,6 +271,16 @@ export default {
     hoveredTask: null,
     today: new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })
   }),
+  computed: {
+    dragOptions () {
+      return {
+        animation: 200,
+        group: 'description',
+        disabled: false,
+        ghostClass: 'drag-ghost'
+      }
+    }
+  },
   methods: {
     refreshEvents ($event) {
       this.events = $event

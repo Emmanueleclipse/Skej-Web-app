@@ -140,7 +140,7 @@ export default {
         // this.$router.replace({
         //   name: 'today'
         // })
-        this.$router.push(!this.$route.query.dest ? { name: 'calendar', params: { lang: this.$route.params.lang } } : this.$route.query.dest)
+        this.$router.push(!this.$route.query.dest ? { name: 'today', params: { lang: this.$route.params.lang } } : this.$route.query.dest)
       }).catch((error) => {
         const errors = error.response.data
         this.active = true
