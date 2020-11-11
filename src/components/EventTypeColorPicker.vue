@@ -29,7 +29,7 @@ export default {
   watch: {
     initialColorIndex: {
       handler (val, oldVal) {
-        console.log('color index: ', this.initialColorIndex)
+        console.log('WATCH color index: ', this.initialColorIndex)
         this.selectColor(this.initialColorIndex)
       }
     }

@@ -72,10 +72,10 @@
                 :key="`task-${task.priority}-${task.name}-${task.is_temp}`"
                 class="pa-0 pt-1 grey-divider"
                 :ref="`task-${task.pk}-text`"
-                @click="setSelectedTask(task)"
                 @mouseover="showTaskEditButtons = true; hoveredTask = task"
                 @mouseleave="showTaskEditButtons = false; hoveredTask = null"
               >
+                <!-- @click="setSelectedTask(task)" -->
                 <v-slide-x-reverse-transition>
                   <span class="float-right" style=""
                     v-show="showTaskEditButtons && hoveredTask === task"
